@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo</title>
+</head>
+<body>
+  <script src="/dist/bundle.js"></script>
+
+  <div
+    class="livephoto-item"
+    data-video="https://blog.twofei.com/1603/1.mp4"
+    data-image="https://blog.twofei.com/1603/1.avif"
+    data-width="252"
+    data-height="336"
+    data-muted="true"
+    data-alt="实况照片示例"
+  ></div>
+    <div
+    class="livephoto-item"
+    data-image="./MVIMG_20260209_121518.jpg"
+    data-muted="true"
+    data-alt="实况照片示例"
+  ></div>
+<script>
+  // 初始化 LivePhoto
+  document.addEventListener('DOMContentLoaded', () => {
+    LivePhoto.init('.livephoto-item');
+  });
+</script>
+</body>
+</html>
