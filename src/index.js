@@ -24,6 +24,12 @@ class LivePhoto {
       mute: options.mute !== undefined ? options.mute : true
     };
 
+    if (this.options.width.endsWith('px')) {
+      this.options.width = parseInt(this.options.width.slice(0, -2));
+    }
+    if (this.options.height.endsWith('px')) {
+      this.options.height = parseInt(this.options.height.slice(0, -2));
+    }
     if (!this.options.imageSrc) {
       console.warn('[LivePhoto] 缺少 imageSrc，无法初始化该实例');
       return;
