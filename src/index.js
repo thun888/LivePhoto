@@ -66,14 +66,14 @@ class LivePhoto {
         }
       };
 
-      if (type === 'android') {
-        parseAndroidLivePhoto(this.options.imageSrc)
-          .then(handleResult)
-          .catch(e => console.warn('[LivePhoto] Auto parse failed:', e));
-      } else if (type === 'apple' || this.options.imageSrc.toLowerCase().endsWith('.livp')) {
+      if (type === 'apple' || this.options.imageSrc.toLowerCase().endsWith('.livp')) {
         parseAppleLivePhoto(this.options.imageSrc)
           .then(handleResult)
           .catch(e => console.warn('[LivePhoto] Apple LivePhoto parse failed:', e));
+      } else if (type === 'android') {
+        parseAndroidLivePhoto(this.options.imageSrc)
+          .then(handleResult)
+          .catch(e => console.warn('[LivePhoto] Android LivePhoto parse failed:', e));
       } else {
         console.warn('[LivePhoto] 无法识别的 LivePhoto 类型，默认尝试 Android 解析');
         parseAndroidLivePhoto(this.options.imageSrc)
