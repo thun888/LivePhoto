@@ -1,5 +1,11 @@
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+
 module.exports = {
     // mode: "development",
+    mode: "production",
     entry: './src/index.js',
     output: {
         filename: 'bundle.js',
@@ -10,12 +16,37 @@ module.exports = {
             // export: 'default', // 直接指向 default 导出
         }
     },
+    // plugins: [
+    //     new BundleAnalyzerPlugin()
+    // ],
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false, // 不生成 .LICENSE.txt 文件
+                terserOptions: {
+                    compress: {
+                        drop_console: true, // 移除 console.log
+                        drop_debugger: true, // 移除 debugger
+                    },
+                },
+            }),
+            new CssMinimizerPlugin(), // 压缩 CSS
+        ],
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: "[name].css",
+        }),
+        new CssMinimizerPlugin(),
+        new TerserPlugin()
+    ],
     module: {
         rules: [
             {
                 test: /\.css$/i,
                 use: [
-                    'style-loader',
+                    MiniCssExtractPlugin.loader,
                     'css-loader'
                 ]
             },
