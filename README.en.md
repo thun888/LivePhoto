@@ -11,6 +11,7 @@ A JavaScript library for parsing and displaying Live Photos on the web. It suppo
 -  **Multi-format Support**:
   - Android Motion Photos
   - Apple Live Photos (.livp)
+  - Supports HEIC format images
   - Combined static image + video pairs
 
 

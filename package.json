@@ -1,6 +1,6 @@
 {
   "name": "@thun888/live-photo",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "main": "dist/bundle.js",
   "files": [
     "dist"
@@ -19,5 +19,8 @@
     "webpack": "^5.105.2",
     "webpack-bundle-analyzer": "^5.2.0",
     "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "heic-decode": "^2.1.0"
   }
 }

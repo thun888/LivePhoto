@@ -13,7 +13,7 @@
 <body>
   <script src="/dist/bundle.js"></script>
 
-  <div
+  <!-- <div
     class="livephoto-item"
     data-video="https://blog.twofei.com/1603/1.mp4"
     data-image="https://blog.twofei.com/1603/1.avif"
@@ -30,12 +30,35 @@
     data-height="300"
     data-muted="true"
     data-alt="实况照片示例"
+  ></div> -->
+
+<!--   
+  <div
+    class="livephoto-item"
+    data-image="./images/MVIMG_20260209_121518.jpg"
+    data-muted="true"
+    data-alt="实况照片示例"
+  ></div> -->
+
+  <div
+    class="livephoto-item"
+    data-video="./images/IMG_E1887.mov"
+    data-image="./images/IMG_E1887.heic"
+    data-muted="true"
+    data-alt="实况照片示例"
   ></div>
+
 <script>
   // 初始化 LivePhoto
   document.addEventListener('DOMContentLoaded', () => {
     LivePhoto.init('.livephoto-item');
   });
 </script>
+
+<style>
+.live-photo {
+  max-width: min(400px, 100%);
+}
+</style>
 </body>
 </html>

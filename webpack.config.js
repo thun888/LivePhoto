@@ -42,6 +42,7 @@ module.exports = {
         new TerserPlugin()
     ],
     module: {
+        noParse: /libheif-bundle\.js$/,
         rules: [
             {
                 test: /\.css$/i,

@@ -17,17 +17,17 @@ class LivePhoto {
       videoSrc: options.videoSrc || this.container.dataset.video || '',
       imageSrc: options.imageSrc || this.container.dataset.image,
       type: options.type || this.container.dataset.type || 'android',
-      width: userWidth || 0,
-      height: userHeight || 0,
+      width: userWidth || 400,
+      height: userHeight || 300,
       alt: options.alt || '',
       iconText: options.iconText || '实况',
       mute: options.mute !== undefined ? options.mute : true
     };
 
-    if (this.options.width.endsWith('px')) {
+    if (typeof this.options.width === 'string' && this.options.width.endsWith('px')) {
       this.options.width = parseInt(this.options.width.slice(0, -2));
     }
-    if (this.options.height.endsWith('px')) {
+    if (typeof this.options.height === 'string' && this.options.height.endsWith('px')) {
       this.options.height = parseInt(this.options.height.slice(0, -2));
     }
     if (!this.options.imageSrc) {
@@ -47,7 +47,32 @@ class LivePhoto {
     this.observer.observe(this.container);
   }
 
+  async convertHeicIfNeeded(src) {
+    if (!/\.heic$/i.test(src)) return;
+    try {
+      const { default: decodeHeic } = await import('heic-decode');
+      const response = await fetch(src);
+      const arrayBuffer = await response.arrayBuffer();
+      const { width, height, data } = await decodeHeic({ buffer: new Uint8Array(arrayBuffer) });
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      if (this.autoSize) {
+        this.options.width = width;
+        this.options.height = height;
+        this.autoSize = false;
+      }
+      canvas.getContext('2d').putImageData(new ImageData(data, width, height), 0, 0);
+      canvas.toBlob((blob) => {
+        this.elements.image.src = URL.createObjectURL(blob);
+      }, 'image/jpeg');
+    } catch (e) {
+      console.warn('[LivePhoto] HEIC 转换失败:', e);
+    }
+  }
+
   init() {
+    this.convertHeicIfNeeded(this.options.imageSrc);
     this.render();
     this.bindEvents();
     if (!this.options.videoSrc && this.options.imageSrc) {

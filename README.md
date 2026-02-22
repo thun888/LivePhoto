@@ -11,6 +11,7 @@
 - **多格式支持**：
   - 支持 Android 动态照片 (Motion Photos)
   - 支持 Apple Live Photos (.livp)
+  - 支持 HEIC 格式图片
   - 普通视频+图片组合
 
 ## 安装
