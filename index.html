@@ -3,7 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Demo</title>
-  <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/@thun888/live-photo/dist/main.css">
+  <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/@thun888/live-photo@1.1.0/dist/main.css">
   <style>
     .livephoto-item {
       display: inline-block;
@@ -11,8 +11,10 @@
   </style>
 </head>
 <body>
-  <script src="https://gcore.jsdelivr.net/npm/@thun888/live-photo/dist/bundle.js"></script>
+  <script src="https://gcore.jsdelivr.net/npm/@thun888/live-photo@1.1.0/dist/bundle.js"></script>
 
+  <p>实况照片示例：</p>
+  <p>图片/视频引入</p>
   <div
     class="livephoto-item"
     data-video="https://blog.twofei.com/1603/1.mp4"
@@ -22,7 +24,15 @@
     data-muted="true"
     data-alt="实况照片示例"
   ></div>
-
+  <p>图片/视频引入（HEIC/MOV）</p>
+  <div
+    class="livephoto-item"
+    data-video="./images/IMG_E1887.mov"
+    data-image="./images/IMG_E1887.heic"
+    data-muted="true"
+    data-alt="heic 实况照片示例"
+  ></div>
+  <p>自动解析（安卓）</p>
   <div
     class="livephoto-item"
     data-image="./images/MVIMG_20260209_121518.jpg"
@@ -32,18 +42,17 @@
     data-alt="实况照片示例"
   ></div>
 
-  <div
-    class="livephoto-item"
-    data-video="./images/IMG_E1887.mov"
-    data-image="./images/IMG_E1887.heic"
-    data-muted="true"
-    data-alt="heic 实况照片示例"
-  ></div>
+
 <script>
   // 初始化 LivePhoto
   document.addEventListener('DOMContentLoaded', () => {
     LivePhoto.init('.livephoto-item');
   });
 </script>
+<style>
+.live-photo {
+  max-width: min(400px, 100%);
+}
+</style>
 </body>
 </html>
