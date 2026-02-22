@@ -1,7 +1,7 @@
 {
   "name": "@thun888/live-photo",
-  "version": "1.1.0",
-  "main": "dist/bundle.js",
+  "version": "1.1.1",
+  "main": "dist/main.js",
   "files": [
     "dist"
   ],

@@ -53,6 +53,8 @@ init('.livephoto-item');
 </script>
 ```
 
+> `bundle.js` includes HEIC dependency handling. If not needed, you can import `main.js` and it will load dynamically when required.
+
 ### 2. HTML Structure
 
 Create a container with a specific class (e.g., `livephoto-item`) and configure the image and options via `data-*` attributes.

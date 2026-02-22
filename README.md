@@ -51,6 +51,8 @@ init('.livephoto-item');
 </script>
 ```
 
+> `bundle.js`包括HEIC处理依赖，如不需要可以引入`main.js`，在需要时动态加载
+
 ### 2. HTML 结构
 
 创建带有特定类名（如 `livephoto-item`）的容器，并通过 `data-*` 属性配置图片和选项。
