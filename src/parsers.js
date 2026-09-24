@@ -1,14 +1,60 @@
-export async function parseAndroidLivePhoto(imageSrc) {
-  const response = await fetch(imageSrc);
-  const buffer = await response.arrayBuffer();
-  const offset = findVideoOffset(buffer);
-  
-  if (offset > 0) {
-    return {
-        video: new Blob([buffer.slice(offset)], { type: 'video/mp4' })
-    };
+/**
+ * 抓取资源并上报加载进度（0~1），返回 ArrayBuffer。
+ * 当响应没有 Content-Length（无法计算进度）时，会先上报 null。
+ */
+export async function fetchWithProgress(url, onProgress) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Failed to fetch ${url}: HTTP ${response.status}`);
+
+  const report = (ratio) => {
+    if (typeof onProgress === 'function') onProgress(ratio);
+  };
+
+  const total = Number(response.headers.get('Content-Length')) || 0;
+  if (!response.body || !total) {
+    report(null);
+    return response.arrayBuffer();
   }
-  throw new Error('No video found in Android Live Photo');
+
+  const reader = response.body.getReader();
+  const chunks = [];
+  let received = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    if (value) {
+      chunks.push(value);
+      received += value.length;
+      report(Math.min(received / total, 1));
+    }
+  }
+  report(1);
+
+  const bytes = new Uint8Array(received);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return bytes.buffer;
+}
+
+export async function parseAndroidLivePhoto(imageSrc, onProgress) {
+  const buffer = await fetchWithProgress(imageSrc, onProgress);
+  const video = extractAndroidVideo(buffer);
+  if (!video) throw new Error('No video found in Android Live Photo');
+  return { video };
+}
+
+/**
+ * 从 Android LivePhoto 文件缓冲中提取视频部分，未找到时返回 null
+ */
+export function extractAndroidVideo(buffer) {
+  const offset = findVideoOffset(buffer);
+  if (offset > 0) {
+    return new Blob([buffer.slice(offset)], { type: 'video/mp4' });
+  }
+  return null;
 }
 
 function findVideoOffset(buffer) {
@@ -34,11 +80,9 @@ function findVideoOffset(buffer) {
   return -1;
 }
 
-export async function parseAppleLivePhoto(imageSrc) {
-  const response = await fetch(imageSrc);
-  const buffer = await response.arrayBuffer();
-  const files = await unzipLivp(buffer);
-  return files;
+export async function parseAppleLivePhoto(imageSrc, onProgress) {
+  const buffer = await fetchWithProgress(imageSrc, onProgress);
+  return unzipLivp(buffer);
 }
 
 async function unzipLivp(buffer) {
